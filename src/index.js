@@ -8,7 +8,7 @@ const { getDolar, getCrypto } = require('./services/currency')
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
 
 // Inicializa o Bot
-// Manda cotacao a cada 60s
+// Manda cotacao a cada 600s
 client.once('ready', () => {
 
     getCurrency() 
@@ -17,22 +17,33 @@ client.once('ready', () => {
 
 })
 
-
+// Interacoes de Comandos com o Bot
 client.on('interactionCreate', async interaction => {
 
-    let cryptosList = {}
+    let cryptosListTag = {}
     Object.keys(allCryptos).forEach(key => {
-        cryptosList[allCryptos[key].title.split('-')[0].trim()] = key
+        cryptosListTag[allCryptos[key].title.split('-')[0].trim()] = key
     })
 
-    if (!interaction.isCommand()) return;
-
-    const cryptos = await getCrypto()
+    // if (!interaction.isCommand()) {
+    //     console.log('seu burro')
+    //     return 0
+    // };
 
 	const { commandName } = interaction;
 
-    // List Cryptos
-	if (commandName === 'cryptos') {
+    // List all TISP Cryptos
+    if (commandName === 'help') {
+        const helpMessage = await getHelpMessage()
+
+		await interaction.reply({ embeds: helpMessage})
+    }
+    else if (commandName === 'cryptostag') {
+        const tagsMessage = await getTagsMessage(cryptosListTag)
+
+		await interaction.reply({ embeds: tagsMessage})
+    }
+	else if (commandName === 'getcryptos') {
         
         const currencyMessage = await getCurrencyMessages()
 
@@ -42,11 +53,11 @@ client.on('interactionCreate', async interaction => {
     }
     else if (commandName === 'crypto') {
 
-        const currentCrypto = interaction.options.getString('actualcrypto').toUpperCase();
+        const currentCrypto = interaction.options.getString('crytptoname').toUpperCase();
 
         try {
-            if (Object.keys(cryptosList).indexOf(currentCrypto.toUpperCase()) > -1 ) {
-                const currencyMessage = await getCurrencyMessages([cryptosList[currentCrypto]])  
+            if (Object.keys(cryptosListTag).indexOf(currentCrypto.toUpperCase()) > -1 ) {
+                const currencyMessage = await getCurrencyMessages([cryptosListTag[currentCrypto]])  
 
                 interaction.reply({ embeds: currencyMessage})
             } else {
@@ -64,9 +75,9 @@ client.on('interactionCreate', async interaction => {
 
     // Convert some Crypto to USD/BRL
     }
-    else if (commandName === 'currency') {
+    else if (commandName === 'exchange') {
 
-        const currentCrypto = interaction.options.getString('checkcrypto').toUpperCase();
+        const currentCrypto = interaction.options.getString('cryptotoexchange').toUpperCase();
         const quantity = interaction.options.getString('quantity');
 
         let cryptosToSearch = Object.keys(allCryptos).join(',')
@@ -75,7 +86,7 @@ client.on('interactionCreate', async interaction => {
         
         try {
 
-            if (Object.keys(cryptosList).indexOf(currentCrypto) > -1 ) {
+            if (Object.keys(cryptosListTag).indexOf(currentCrypto) > -1 ) {
 
                 if (!quantity) {
 
@@ -84,14 +95,14 @@ client.on('interactionCreate', async interaction => {
                 }
                 else {
 
-                    const valueInUSD = parseFloat(quantity)*crypto[cryptosList[currentCrypto]].usd.toString();
-                    const valueInBRL = parseFloat(quantity)*crypto[cryptosList[currentCrypto]].brl.toString();
+                    const valueInUSD = parseFloat(quantity)*crypto[cryptosListTag[currentCrypto]].usd.toString();
+                    const valueInBRL = parseFloat(quantity)*crypto[cryptosListTag[currentCrypto]].brl.toString();
 
                     const responseMessage = new MessageEmbed()
-                        .setColor(allCryptos[cryptosList[currentCrypto]].color)
+                        .setColor(allCryptos[cryptosListTag[currentCrypto]].color)
                         .setTitle('Cotação de ' + quantity + " " + currentCrypto.toUpperCase())
                         .setAuthor('TISP Coin', 'https://i.ibb.co/cNsHf4T/pp.png', '')
-                        .setThumbnail(allCryptos[cryptosList[currentCrypto]].image)
+                        .setThumbnail(allCryptos[cryptosListTag[currentCrypto]].image)
                         .addField('Dolar', '$ ' + parseFloat(valueInUSD).toFixed(2), true)
                         .addField('Real', 'R$ ' + parseFloat(valueInBRL).toFixed(2), true)
                         .setTimestamp()
@@ -150,8 +161,8 @@ const getCurrencyMessages = async (currenciesToGet = []) => {
                     .setURL(allCryptos[key].url)
                     .setAuthor('TISP Coin', 'https://i.ibb.co/cNsHf4T/pp.png', allCryptos[key].url)
                     .setThumbnail(allCryptos[key].image)
-                    .addField('Dolar', '$ ' + crypto[key].usd.toString(), true)
-                    .addField('Real', 'R$ ' + crypto[key].brl.toString(), true)
+                    .addField('Dolar', '$ ' + crypto[key].usd.toFixed(2).toString(), true)
+                    .addField('Real', 'R$ ' + crypto[key].brl.toFixed(2).toString(), true)
                     .addField('Variação 24h Dolar', (crypto[key].usd_24h_change < 0) ? '🟥 ' : '🟩 ' + crypto[key].usd_24h_change.toFixed(4).toString() + '%', false)
                     .addField('Variação 24h Real', (crypto[key].usd_24h_change < 0) ? '🟥 ' : '🟩 '+ crypto[key].brl_24h_change.toFixed(4).toString() + '%', false)
                     .setTimestamp()
@@ -184,6 +195,45 @@ const getCurrencyMessages = async (currenciesToGet = []) => {
         }
 
     })
+
+    return message
+
+}
+
+const getHelpMessage = async () => {
+    
+    const message = []
+            
+    message.push(new MessageEmbed()
+        .setColor('#68237f')
+        .setTitle('TISP - Lista de Comandos do bot')
+        .setAuthor('TISP Coin', 'https://i.ibb.co/cNsHf4T/pp.png', '')
+        .setImage('https://i.pinimg.com/originals/ed/32/31/ed32319213bb232b3e9fb85cf06739d9.gif')
+        .addField('/getcryptos', 'Replies with all TISP Cryptos Currencies!', false)
+        .addField('/crypto [cryptoTAG]', 'Replies with specific TISP Cryptos Currencies!', false)
+        .addField('/exchange [cryptoTAG] [quantity]', 'Replies crypto currency conversion', false)
+        .addField('/cryptostag', 'Replies all TISP cryptos TAGs', false)
+        .addField('/help', 'Replies with all commands', false)
+        .setTimestamp())
+
+    return message
+
+}
+
+const getTagsMessage = async (cryptosTagList) => {
+    
+    const message = []
+
+    const messageEmbed = new MessageEmbed()
+        .setColor('#68237f')
+        .setTitle('TISP - Lista de tags das cryptos')
+        .setAuthor('TISP Coin', 'https://i.ibb.co/cNsHf4T/pp.png', '')
+    
+    Object.keys(cryptosTagList).forEach(key => {
+        messageEmbed.addField(key, allCryptos[cryptosTagList[key]].title.split('-')[1], true)
+    })
+    
+    message.push(messageEmbed)
 
     return message
 
