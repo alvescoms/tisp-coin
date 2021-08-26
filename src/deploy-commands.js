@@ -12,7 +12,8 @@ const commands = [
     .addStringOption(option => option.setName('cryptotoexchange').setDescription('Enter the Crypto'))
     .addStringOption(option => option.setName('quantity').setDescription('Enter the quantity')),
 	new SlashCommandBuilder().setName('help').setDescription('Replies with all commands'),
-	new SlashCommandBuilder().setName('cryptostag').setDescription('Replies all TISP cryptos TAGs')
+	new SlashCommandBuilder().setName('cryptostag').setDescription('Replies all TISP cryptos TAGs'),
+	new SlashCommandBuilder().setName('getpvugroups').setDescription('Replies with PVU groups list'),
 ].map(command => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(token);

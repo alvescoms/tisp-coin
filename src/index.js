@@ -1,6 +1,7 @@
 const { Client, Intents, MessageEmbed } = require('discord.js')
 const { token, channelId } = require('./config.json')
 const allCryptos = require('./cryptos.json')
+const groupsPvu = require('./groups-pvu.json')
 // const allCurrencies = require('./currencies.json')
 
 const { getDolar, getCrypto } = require('./services/currency')
@@ -50,6 +51,11 @@ client.on('interactionCreate', async interaction => {
 		await interaction.reply({ embeds: currencyMessage})
 
     // Get Actual Crypto Value
+    }
+    else if (commandName === 'getpvugroups') {
+        const groupsMessage = await getGroupsMessage()
+
+		await interaction.reply({ embeds: groupsMessage})
     }
     else if (commandName === 'crypto') {
 
@@ -213,6 +219,7 @@ const getHelpMessage = async () => {
         .addField('/crypto [cryptoTAG]', 'Replies with specific TISP Cryptos Currencies!', false)
         .addField('/exchange [cryptoTAG] [quantity]', 'Replies crypto currency conversion', false)
         .addField('/cryptostag', 'Replies all TISP cryptos TAGs', false)
+        .addField('/getpvugroups', 'Replies with PVU groups list', false)
         .addField('/help', 'Replies with all commands', false)
         .setTimestamp())
 
@@ -236,5 +243,26 @@ const getTagsMessage = async (cryptosTagList) => {
     message.push(messageEmbed)
 
     return message
+
+}
+
+const getGroupsMessage = async () => {
+    
+    const messageEmbed = new MessageEmbed()
+        .setColor('#68237f')
+        .setTitle('TISP - Grupos de acesso PVU')
+        .setAuthor('TISP Coin', 'https://i.ibb.co/cNsHf4T/pp.png', '')
+
+    for (let index = 0; index < groupsPvu.groups.length; index++) {
+            
+        var item = '```'
+        item += groupsPvu.groups[index].join(', ').toString()
+        item += '```'
+
+        messageEmbed.addField('Grupo ' + (index + 1).toString(),item, false)
+
+    }
+
+    return [messageEmbed]
 
 }
