@@ -17,14 +17,14 @@ COPY . /tispcoin
 
 RUN cd /tispcoin
 
-RUN cp config.json.template config.json
+RUN cp src/config.json.template src/config.json
 
 RUN sed -i 's/BOT_TOKEN/${BOT_TOKEN}/g'\
         -i 's/SERVER_CHANNEL_ID/${SERVER_CHANNEL_ID}g'\
         -i 's/BOT_ID/${BOT_ID}g'\
         -i 's/SERVER_ID/${SERVER_ID}g' config.json
 
-RUN yarn install
+RUN npm install
 
 RUN yarn deploy-commands
 
