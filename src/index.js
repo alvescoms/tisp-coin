@@ -197,10 +197,10 @@ const getNextLoginTime = async () => {
 
     const messageEmbed = new MessageEmbed()
         .setColor('#68237f')
-        .setTitle('TISP - Hora de Login do PVU')
+        .setTitle('TISP - Proximo Login PVU')
         .setAuthor('TISP Coin', 'https://i.ibb.co/cNsHf4T/pp.png', '')
-        .addField('Proximo Login ',nextHour+":"+nextMinute,true)
         .addField('Grupo', groupToLogin.toString(),true)
+        .addField('Hora',nextHour+":"+nextMinute,true)
     
     message.push(messageEmbed)
 
