@@ -14,6 +14,7 @@ const commands = [
 	new SlashCommandBuilder().setName('help').setDescription('Replies with all commands'),
 	new SlashCommandBuilder().setName('cryptostag').setDescription('Replies all TISP cryptos TAGs'),
 	new SlashCommandBuilder().setName('getpvugroups').setDescription('Replies with PVU groups list'),
+	new SlashCommandBuilder().setName('nextlogintime').setDescription('Replies Next PVU Login Time')
 ].map(command => command.toJSON())
 
 const rest = new REST({ version: '9' }).setToken(token);

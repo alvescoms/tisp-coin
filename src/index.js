@@ -26,11 +26,6 @@ client.on('interactionCreate', async interaction => {
         cryptosListTag[allCryptos[key].title.split('-')[0].trim()] = key
     })
 
-    // if (!interaction.isCommand()) {
-    //     console.log('seu burro')
-    //     return 0
-    // };
-
 	const { commandName } = interaction;
 
     // List all TISP Cryptos
@@ -38,6 +33,12 @@ client.on('interactionCreate', async interaction => {
         const helpMessage = await getHelpMessage()
 
 		await interaction.reply({ embeds: helpMessage})
+    }
+    // Get Next Login Time
+    else if (commandName === 'nextlogintime') {
+        const loginMessage = await getNextLoginTime()
+
+		await interaction.reply({ embeds: loginMessage})
     }
     // List All TISP Cryptos Tag
     else if (commandName === 'cryptostag') {
@@ -147,7 +148,55 @@ client.on('interactionCreate', async interaction => {
 
 client.login(token)
 
+const getNextLoginTime = async () => {
 
+    actualYear = new Date().getFullYear()
+    actualMonth = new Date().getMonth()
+    actualDay = new Date().getDay()
+    actualHour = new Date().getHours()
+    actualMinute = new Date().getMinutes()
+    actualDate = new Date(actualYear, actualMonth, actualDay, actualHour, actualMinute, 0, 0)
+
+    var loginTimes = []
+    for (let index = 0; index < groupsPvu.groups.length; index++) {
+        loginTimes += groupsPvu.groups[index].join(', ').toString()
+        loginTimes += ', '
+    }
+
+    loginTimes = loginTimes.split(',').sort()
+
+    dateFound = false
+
+    for (let index = 1; index < loginTimes.length ; index++) {
+        dateToCompare = new Date(actualYear, actualMonth, actualDay, loginTimes[index].split(':')[0], loginTimes[index].split(':')[1], 0, 0)
+        if ( actualDate < dateToCompare) {
+
+            nextHour = dateToCompare.getHours().toString()
+            nextMinute = dateToCompare.getMinutes().toString()
+            dateFound = true;
+            
+            break;
+        }
+
+    }
+
+    if (!dateFound) {
+        nextHour = loginTimes[1].split(':')[0].toString()
+        nextMinute = loginTimes[1].split(':')[1].toString()
+    }
+    const message = []
+
+    const messageEmbed = new MessageEmbed()
+        .setColor('#68237f')
+        .setTitle('TISP - Hora de Login')
+        .setAuthor('TISP Coin', 'https://i.ibb.co/cNsHf4T/pp.png', '')
+        .addField('Proximo Login às ',nextHour+":"+nextMinute,true)
+    
+    message.push(messageEmbed)
+
+    return message
+
+}
 // Messages for interactions
 const getCurrency = async () => {
 
