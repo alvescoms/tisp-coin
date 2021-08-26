@@ -1,0 +1,6 @@
+{
+    "token": "BOT_TOKEN",
+    "channelId": "SERVER_CHANNEL_ID",
+    "clientId": "BOT_ID",
+    "guildId": "SERVER_ID"
+}
