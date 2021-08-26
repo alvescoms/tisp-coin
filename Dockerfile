@@ -1,11 +1,15 @@
-FROM ubuntu:20.04
+FROM node:16
 
 ARG BOT_TOKEN
 ARG SERVER_CHANNEL_ID
 ARG BOT_ID
 ARG SERVER_ID
 
-RUN apt-get update && apt-get install nodejs yarn -y
+# RUN apt-get update -y && apt-get upgrade -y && apt-get install curl -y
+
+# RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+
+# RUN apt-get install -y nodejs yarn
 
 RUN mkdir /tispcoin
 
