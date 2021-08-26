@@ -184,13 +184,23 @@ const getNextLoginTime = async () => {
         nextHour = loginTimes[1].split(':')[0].toString()
         nextMinute = loginTimes[1].split(':')[1].toString()
     }
+
+    groupToLogin = -1
+    for (let index = 0; index < groupsPvu.groups.length; index++) {
+        if (groupsPvu.groups[index].indexOf((nextHour+":"+nextMinute).toString()) > -1 ) {
+            groupToLogin = index+1
+            break;
+        }
+    }
+
     const message = []
 
     const messageEmbed = new MessageEmbed()
         .setColor('#68237f')
-        .setTitle('TISP - Hora de Login')
+        .setTitle('TISP - Hora de Login do PVU')
         .setAuthor('TISP Coin', 'https://i.ibb.co/cNsHf4T/pp.png', '')
-        .addField('Proximo Login às ',nextHour+":"+nextMinute,true)
+        .addField('Proximo Login ',nextHour+":"+nextMinute,true)
+        .addField('Grupo', groupToLogin.toString(),true)
     
     message.push(messageEmbed)
 
