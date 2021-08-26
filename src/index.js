@@ -39,28 +39,33 @@ client.on('interactionCreate', async interaction => {
 
 		await interaction.reply({ embeds: helpMessage})
     }
+    // List All TISP Cryptos Tag
     else if (commandName === 'cryptostag') {
         const tagsMessage = await getTagsMessage(cryptosListTag)
 
 		await interaction.reply({ embeds: tagsMessage})
     }
+    // List all TISP Cryptos Currency
 	else if (commandName === 'getcryptos') {
         
         const currencyMessage = await getCurrencyMessages()
 
 		await interaction.reply({ embeds: currencyMessage})
 
-    // Get Actual Crypto Value
     }
+    // Get PVU Group List
     else if (commandName === 'getpvugroups') {
         const groupsMessage = await getGroupsMessage()
 
 		await interaction.reply({ embeds: groupsMessage})
     }
+    // Get specific Crypto Currency
     else if (commandName === 'crypto') {
 
+        // Get actual crypto Param
         const currentCrypto = interaction.options.getString('crytptoname').toUpperCase();
 
+        // Try to Verify bad formatted command
         try {
             if (Object.keys(cryptosListTag).indexOf(currentCrypto.toUpperCase()) > -1 ) {
                 const currencyMessage = await getCurrencyMessages([cryptosListTag[currentCrypto]])  
@@ -79,17 +84,21 @@ client.on('interactionCreate', async interaction => {
             await interaction.reply("O comando enviado esta mal formatado, favor verificar")
         }
 
-    // Convert some Crypto to USD/BRL
     }
+    // Convert specifc Crypto to USD/BRL
     else if (commandName === 'exchange') {
 
+        // Get actual crypto Param
         const currentCrypto = interaction.options.getString('cryptotoexchange').toUpperCase();
+        // Get acrypto quantity Param
         const quantity = interaction.options.getString('quantity');
 
+        // List all cryptos tag:token
         let cryptosToSearch = Object.keys(allCryptos).join(',')
 
         const crypto = await getCrypto(cryptosToSearch)
         
+        // Try to Verify bad formatted command
         try {
 
             if (Object.keys(cryptosListTag).indexOf(currentCrypto) > -1 ) {
@@ -118,7 +127,7 @@ client.on('interactionCreate', async interaction => {
 
             }
             else {
-
+                // If Crypto dont exist on TISP
                 await interaction.reply("Nao identificamos a crypto desejada, favor verificar")
 
             }
@@ -138,6 +147,8 @@ client.on('interactionCreate', async interaction => {
 
 client.login(token)
 
+
+// Messages for interactions
 const getCurrency = async () => {
 
     const channel = await client.channels.fetch(channelId)
