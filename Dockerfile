@@ -5,6 +5,10 @@ ARG SERVER_CHANNEL_ID
 ARG BOT_ID
 ARG SERVER_ID
 
+ENV TZ=America/Sao_Paulo
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN mkdir /tispcoin
 
 COPY . /tispcoin
