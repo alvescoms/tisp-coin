@@ -199,8 +199,12 @@ const getNextLoginTime = async () => {
         .setColor('#68237f')
         .setTitle('TISP - Proximo Login PVU')
         .setAuthor('TISP Coin', 'https://i.ibb.co/cNsHf4T/pp.png', '')
-        .addField('Grupo', groupToLogin.toString(),true)
-        .addField('Hora',nextHour+":"+nextMinute,true)
+        .setThumbnail('https://media.discordapp.net/attachments/222846386117279745/880534609211826226/corvinho.png')
+        .addField('Grupo',groupToLogin.toString(),true)
+        .addField('Hora', nextHour+":"+nextMinute,true)
+        .setImage('https://cdn.discordapp.com/attachments/877387440975925258/878009662270767144/IMG_20210806_190335.png')
+        .setFooter('Corre se não o corvo vai te pegar', 'https://assets.coingecko.com/coins/images/17461/small/token-200x200.png?1627883446g');
+
     
     message.push(messageEmbed)
 
