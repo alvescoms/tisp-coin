@@ -1,5 +1,10 @@
 FROM ubuntu:20.04
 
+ARG BOT_TOKEN
+ARG SERVER_CHANNEL_ID
+ARG BOT_ID
+ARG SERVER_ID
+
 RUN apt-get update && apt-get install nodejs yarn -y
 
 RUN mkdir /tispcoin
