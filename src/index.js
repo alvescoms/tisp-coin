@@ -174,7 +174,7 @@ const getNextLoginTime = async () => {
             nextHour = dateToCompare.getHours().toString()
             nextMinute = dateToCompare.getMinutes().toString()
             dateFound = true;
-            
+
             break;
         }
 
@@ -280,6 +280,7 @@ const getHelpMessage = async () => {
         .addField('/exchange [cryptoTAG] [quantity]', 'Replies crypto currency conversion', false)
         .addField('/cryptostag', 'Replies all TISP cryptos TAGs', false)
         .addField('/getpvugroups', 'Replies with PVU groups list', false)
+        .addField('/nextlogintime', 'Replies Next PVU Login Time', false)
         .addField('/help', 'Replies with all commands', false)
         .setTimestamp())
 
