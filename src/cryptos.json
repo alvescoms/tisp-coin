@@ -1,0 +1,26 @@
+{
+    "binancecoin": {
+        "title" : "BNB - Binance Coin",
+        "url": "https://www.coingecko.com/pt/moedas/binancecoin",
+        "image": "https://cryptologos.cc/logos/binance-coin-bnb-logo.png",
+        "color":"#ffd700"
+    },
+    "plant-vs-undead-token": {
+        "title" : "PVU - Plants vs Undead",
+        "url": "https://www.coingecko.com/pt/moedas/plant-vs-undead-token",
+        "image": "https://assets.coingecko.com/coins/images/17461/small/token-200x200.png?1627883446g",
+        "color": "#9fde47"
+    },
+    "coinary-token": {
+        "title" : "CYT - Coinary Token",
+        "url": "https://www.coingecko.com/pt/moedas/coinary-token",
+        "image": "https://assets.coingecko.com/coins/images/17622/small/CYT-LOGO-1.png?1628669366",
+        "color": "#ff4f24"
+    },
+    "smooth-love-potion": {
+        "title" : "SLP - Smooth Love Potion",
+        "url": "https://www.coingecko.com/pt/moedas/smooth-love-potion",
+        "image": "https://assets.coingecko.com/coins/images/10366/small/SLP.png?1578640057",
+        "color":"#ffa4b1"
+    }
+}
