@@ -8,7 +8,7 @@ const { getDolar, getCrypto } = require('./services/currency')
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
 
-// Inicializa o Bot 
+// Inicializa o Bot  
 // Manda cotacao a cada 600s
 client.once('ready', () => {
 
